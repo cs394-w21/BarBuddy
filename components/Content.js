@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Header } from 'react-native-elements';
 import { Text, View } from 'react-native';
-import { ListItem, Avatar } from 'react-native-elements'
-import CocktailList from './CocktailList/index.js'
+import Icon from 'react-native-elements';
+import CocktailList from './CocktailList/index.js';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default class Content extends Component {
@@ -47,8 +49,6 @@ export default class Content extends Component {
             }).catch((error) => {
                 console.error(error);
             });
-
-           
         }
     }
 
@@ -62,10 +62,24 @@ export default class Content extends Component {
         let drinkArr = [];
         let drink;
         for(drink of this.state.cocktailData.drinks){
+            // get the ingredients for each drink //try make more efficient + display each ingredients individually for filter
+            let ingredientsArray = []; 
+            for(let i=0; i<15; i++) {    
+                let x = `strIngredient${i+1}`
+                if (drink[x]!=null) {
+                ingredientsArray.push(drink[x] + ', ')
+                }
+                else{ break }
+            }
+            console.log(ingredientsArray)
+
             let drinkName = drink.strDrink;
             let drinkImage = drink.strDrinkThumb; 
-            let drinkDict = {name: drinkName,
-            avatar_url: drinkImage};
+            let drinkDict = {
+                name: drinkName,
+                avatar_url: drinkImage,
+                ingredients: ingredientsArray
+        };
             drinkArr.push(drinkDict);
         }
         //console.log(drinkArr);
@@ -78,8 +92,17 @@ export default class Content extends Component {
     render () {   
         this.getCocktailData(this.compileCocktailList);
         return (
-            <View>
-                <Text>This is our BarBuddy App!</Text>
+            <View> 
+            <SafeAreaProvider>
+                    <SafeAreaView>
+                        <Header
+                            leftComponent={{ icon: 'menu', color: '#fff' }}
+                            centerComponent={{ text: "BarBuddy", style: { color: '#fff', fontSize: 32, fontWeight: "bold"} }}
+                            rightComponent={{ icon: 'home', color: '#fff' }}
+                        />
+                    </SafeAreaView>
+                </SafeAreaProvider>
+                
                 <CocktailList cocktailList = {this.state.cocktailList}/>
             </View>
         )
