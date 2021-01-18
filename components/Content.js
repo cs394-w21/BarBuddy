@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Header } from 'react-native-elements';
-import { Text, View } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import Icon from 'react-native-elements';
 import CocktailList from './CocktailList/index.js';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -35,7 +35,7 @@ export default class Content extends Component {
         //     avatar_url: 'https://i1.wp.com/www.moodymixologist.com/wp-content/uploads/2020/02/classic-margarita-cocktail-recipe-03-3560629.jpg?w=733&ssl=1',
         //     ingredients: 'ingredients'
         // },
-    //]
+        //]
 
         if(this.state.dataReceived == 0) { //render kept repeating
             fetch('https://www.thecocktaildb.com/api/json/v2/9973533/popular.php') //fetching popular cocktail data
@@ -53,17 +53,17 @@ export default class Content extends Component {
     }
 
     compileCocktailList() {
-        console.log(this.state.cocktailData);
-        console.log("Drink 1");
-        console.log(this.state.cocktailData.drinks[0].strDrink);
-        //TODO get all drink names, image links (?), and ingredients
-        //put all this info for each drink into its own dictionary
-        //put all dictionaries into a list
+        //console.log(this.state.cocktailData);
+        //console.log("Drink 1");
+        //console.log(this.state.cocktailData.drinks[0].strDrink);
+
         let drinkArr = [];
         let drink;
         for(drink of this.state.cocktailData.drinks){
-            // get the ingredients for each drink //try make more efficient + display each ingredients individually for filter
+            // get the ingredients for each drink 
+            //TODO display each ingredients individually for filter
             let ingredientsArray = []; 
+            
             for(let i=0; i<15; i++) {    
                 let x = `strIngredient${i+1}`
                 if (drink[x]!=null) {
@@ -71,15 +71,14 @@ export default class Content extends Component {
                 }
                 else{ break }
             }
-            console.log(ingredientsArray)
+            //console.log(ingredientsArray)
 
-            let drinkName = drink.strDrink;
-            let drinkImage = drink.strDrinkThumb; 
             let drinkDict = {
-                name: drinkName,
-                avatar_url: drinkImage,
+                name: drink.strDrink,
+                avatar_url: drink.strDrinkThumb,
                 ingredients: ingredientsArray
-        };
+            };
+
             drinkArr.push(drinkDict);
         }
         //console.log(drinkArr);
@@ -93,7 +92,7 @@ export default class Content extends Component {
         this.getCocktailData(this.compileCocktailList);
         return (
             <View> 
-            <SafeAreaProvider>
+                <SafeAreaProvider>
                     <SafeAreaView>
                         <Header
                             leftComponent={{ icon: 'menu', color: '#fff' }}
@@ -101,9 +100,12 @@ export default class Content extends Component {
                             rightComponent={{ icon: 'home', color: '#fff' }}
                         />
                     </SafeAreaView>
+                    <SafeAreaView>
+                        <ScrollView>
+                            <CocktailList cocktailList = {this.state.cocktailList}/>
+                        </ScrollView>
+                    </SafeAreaView>
                 </SafeAreaProvider>
-                
-                <CocktailList cocktailList = {this.state.cocktailList}/>
             </View>
         )
     }
