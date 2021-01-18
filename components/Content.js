@@ -22,16 +22,18 @@ export default class Content extends Component {
     // take cocktail componenet and input into cocktailist 
 
     getCocktailData(callback = () => { }) { 
-        this.state.cocktailList = [{
-            name: 'Classic Margarita',
-            avatar_url: 'https://i1.wp.com/www.moodymixologist.com/wp-content/uploads/2020/02/classic-margarita-cocktail-recipe-03-3560629.jpg?w=733&ssl=1',
-            ingredients: 'ingredients'
-        },
-        {
-            name: 'Chris Jackson',
-            avatar_url: 'https://i1.wp.com/www.moodymixologist.com/wp-content/uploads/2020/02/classic-margarita-cocktail-recipe-03-3560629.jpg?w=733&ssl=1',
-            ingredients: 'ingredients'
-        },]
+        //this.state.cocktailList = [
+        //     {
+        //     name: 'Classic Margarita',
+        //     avatar_url: 'https://i1.wp.com/www.moodymixologist.com/wp-content/uploads/2020/02/classic-margarita-cocktail-recipe-03-3560629.jpg?w=733&ssl=1',
+        //     ingredients: 'ingredients'
+        // },
+        // {
+        //     name: 'Chris Jackson',
+        //     avatar_url: 'https://i1.wp.com/www.moodymixologist.com/wp-content/uploads/2020/02/classic-margarita-cocktail-recipe-03-3560629.jpg?w=733&ssl=1',
+        //     ingredients: 'ingredients'
+        // },
+    //]
 
         if(this.state.dataReceived == 0) { //render kept repeating
             fetch('https://www.thecocktaildb.com/api/json/v2/9973533/popular.php') //fetching popular cocktail data
@@ -51,8 +53,26 @@ export default class Content extends Component {
     }
 
     compileCocktailList() {
-        console.log("hi")
         console.log(this.state.cocktailData);
+        console.log("Drink 1");
+        console.log(this.state.cocktailData.drinks[0].strDrink);
+        //TODO get all drink names, image links (?), and ingredients
+        //put all this info for each drink into its own dictionary
+        //put all dictionaries into a list
+        let drinkArr = [];
+        let drink;
+        for(drink of this.state.cocktailData.drinks){
+            let drinkName = drink.strDrink;
+            let drinkImage = drink.strDrinkThumb; 
+            let drinkDict = {name: drinkName,
+            avatar_url: drinkImage};
+            drinkArr.push(drinkDict);
+        }
+        //console.log(drinkArr);
+        this.setState({
+            cocktailList: drinkArr
+        })
+        console.log(this.state.cocktailList);
     }
 
     render () {   
