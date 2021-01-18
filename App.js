@@ -6,7 +6,6 @@ import Content from './components/Content';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>This is our BarBuddy app!</Text>
       <Content/>
       <StatusBar style="auto" />
     </View>
