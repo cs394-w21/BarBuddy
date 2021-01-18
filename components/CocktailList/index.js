@@ -7,7 +7,6 @@ export default class CocktailList extends Component {
 
 
     render () {
-        
         return (
             <View>
                 {

@@ -8,15 +8,20 @@ export default class Content extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cocktailList: []
+            cocktailList: [],
+            cocktailData: {},
+            dataReceived: 0
         }
+
+        this.getCocktailData = this.getCocktailData.bind(this);
+        this.compileCocktailList = this.compileCocktailList.bind(this);
     }
 
     //Fetch cocktail data.
     // pass cocktail info to cocktail componenet 
     // take cocktail componenet and input into cocktailist 
 
-    getCocktailData() {
+    getCocktailData(callback = () => { }) { 
         this.state.cocktailList = [{
             name: 'Classic Margarita',
             avatar_url: 'https://i1.wp.com/www.moodymixologist.com/wp-content/uploads/2020/02/classic-margarita-cocktail-recipe-03-3560629.jpg?w=733&ssl=1',
@@ -24,13 +29,34 @@ export default class Content extends Component {
         },
         {
             name: 'Chris Jackson',
-            avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+            avatar_url: 'https://i1.wp.com/www.moodymixologist.com/wp-content/uploads/2020/02/classic-margarita-cocktail-recipe-03-3560629.jpg?w=733&ssl=1',
             ingredients: 'ingredients'
         },]
+
+        if(this.state.dataReceived == 0) { //render kept repeating
+            fetch('https://www.thecocktaildb.com/api/json/v2/9973533/popular.php') //fetching popular cocktail data
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                this.setState({
+                    cocktailData: json,
+                    dataReceived: 1
+                }, callback)
+            }).catch((error) => {
+                console.error(error);
+            });
+
+           
+        }
+    }
+
+    compileCocktailList() {
+        console.log("hi")
+        console.log(this.state.cocktailData);
     }
 
     render () {   
-        this.getCocktailData() 
+        this.getCocktailData(this.compileCocktailList);
         return (
             <View>
                 <Text>This is our BarBuddy App!</Text>
