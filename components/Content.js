@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Header } from 'react-native-elements';
 import { Text, View, ScrollView } from 'react-native';
-import Icon from 'react-native-elements';
 import CocktailList from './CocktailList/index.js';
+import IngredientsInput from './IngredientsInput/index.js';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -12,8 +12,9 @@ export default class Content extends Component {
         this.state = {
             cocktailList: [],
             cocktailData: {},
-            dataReceived: 0
-        }
+            dataReceived: 0,
+            //allIngredients: [], //list of ingredients for us 
+        } 
 
         this.getCocktailData = this.getCocktailData.bind(this);
         this.compileCocktailList = this.compileCocktailList.bind(this);
@@ -59,6 +60,7 @@ export default class Content extends Component {
 
         let drinkArr = [];
         let drink;
+        //let allIng = []; //figure out ingredients
         for(drink of this.state.cocktailData.drinks){
             // get the ingredients for each drink 
             //TODO display each ingredients individually for filter
@@ -67,10 +69,12 @@ export default class Content extends Component {
             for(let i=0; i<15; i++) {    
                 let x = `strIngredient${i+1}`
                 if (drink[x]!=null) {
-                ingredientsArray.push(drink[x] + ', ')
+                ingredientsArray.push(drink[x])
                 }
                 else{ break }
             }
+
+            //allIng = allIng.concat(ingredientsArray); //figure out ingredients
             //console.log(ingredientsArray)
 
             let drinkDict = {
@@ -83,13 +87,17 @@ export default class Content extends Component {
         }
         //console.log(drinkArr);
         this.setState({
-            cocktailList: drinkArr
+            cocktailList: drinkArr,
+            //allIngredients: allIng
         })
-        console.log(this.state.cocktailList);
+
+
+        
     }
 
     render () {   
         this.getCocktailData(this.compileCocktailList);
+        
         return (
             <View> 
                 <SafeAreaProvider>
@@ -100,9 +108,17 @@ export default class Content extends Component {
                             rightComponent={{ icon: 'home', color: '#fff' }}
                         />
                     </SafeAreaView>
+
+                    <SafeAreaView>
+                        <IngredientsInput />
+                    </SafeAreaView>
+
                     <SafeAreaView>
                         <ScrollView>
-                            <CocktailList cocktailList = {this.state.cocktailList}/>
+                            <CocktailList 
+                                cocktailList = {this.state.cocktailList}
+                                //allIngredients = {this.state.allIngredients}
+                            />
                         </ScrollView>
                     </SafeAreaView>
                 </SafeAreaProvider>

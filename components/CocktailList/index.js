@@ -7,6 +7,12 @@ export default class CocktailList extends Component {
 
 
     render () {
+        console.log(this.props.cocktailList)
+        //console.log("ingredients")
+        //console.log(this.props.allIngredients)
+        //let uniqueDrinks = [...new Set(this.props.allIngredients)]
+        //console.log(uniqueDrinks);
+
         return (
             <View>
                 {
@@ -15,7 +21,7 @@ export default class CocktailList extends Component {
                         <Avatar source={{uri: l.avatar_url}} />
                         <ListItem.Content>
                             <ListItem.Title>{l.name}</ListItem.Title>
-                            <ListItem.Subtitle>{l.ingredients}</ListItem.Subtitle>
+                            <ListItem.Subtitle>{l.ingredients.join(', ')}</ListItem.Subtitle>
                         </ListItem.Content>
                         </ListItem>
                     ))
