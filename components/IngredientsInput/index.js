@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ListItem, Avatar, CheckBox } from 'react-native-elements'
 import { SectionList, StyleSheet, Text, View } from 'react-native';
+import Checkbox from './components/checkbox.js';
 
 const styles = StyleSheet.create({
     container: {
@@ -23,18 +24,63 @@ const styles = StyleSheet.create({
     },
     })
 
+    const handleChange = (e) => {
+        console.log("clicked")
+    }
+
     const SectionListBasics = () => {
         return (
+           
             <View style={styles.container}>
                 <SectionList
                 sections={[
-                    {title: 'Alcohol', data: ['Devin', 'Dan', 'Dominic']},
-                    {title: 'Mixers', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
-                    {title: 'Garnish', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
+                    {title: 'Alcohol', data: [ 'Light rum',
+                     "Bourbon",
+                     "Vodka",
+                     "Gin",
+                     "Tequila",
+                     "Campari",
+                     "Sweet Vermouth",
+                     "Blended whiskey",
+                     "Dry Vermouth",
+                     "Triple sec",
+                     "Apricot brandy",
+                     "Southern Comfort",
+                     "Amaretto",
+                     "Sloe gin",
+                     "Yellow Chartreuse",
+                     "Creme de Cacao",
+                     "Brandy",
+                     "Lemon vodka",
+                     "Blackberry brandy",
+                     "Kummel"]},
+                    {title: 'Mixers', data: [ "Soda water",
+                     "Water",
+                     "Coca-Cola",
+                     "Lime juice",
+                     "Ginger ale",
+                     "Lemon juice",
+                     "Light cream",
+                     "Pineapple juice"]},
+                    {title: 'Garnish', data: [ "Lime",
+                     "Sugar",
+                     "Mint",
+                     "Angostura bitters",
+                     "Lemon",
+                     "Powdered sugar",
+                     "Cherry",
+                     "Olive",
+                     "Salt",
+                     "Ice",
+                     "Maraschino cherry",
+                     "Orange peel",
+                     "Orange bitters",
+                     "Lemon peel",
+                     "Nutmeg"]},
                 ]}
                 renderItem={({item}) => 
-                <CheckBox 
-                    title={item}
+                <Checkbox 
+                    name={item} checked= {false} onChange = {handleChange}
                 />}
                 renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
                 keyExtractor={(item, index) => index}

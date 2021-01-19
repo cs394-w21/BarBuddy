@@ -15,14 +15,19 @@ export default class Content extends Component {
             dataReceived: 0,
             //allIngredients: [], //list of ingredients for us 
         } 
-
         this.getCocktailData = this.getCocktailData.bind(this);
         this.compileCocktailList = this.compileCocktailList.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     //Fetch cocktail data.
     // pass cocktail info to cocktail componenet 
     // take cocktail componenet and input into cocktailist 
+
+
+    handleChange(e) {
+        console.log("clicked")
+    }
 
     getCocktailData(callback = () => { }) { 
         //this.state.cocktailList = [
@@ -110,7 +115,7 @@ export default class Content extends Component {
                     </SafeAreaView>
 
                     <SafeAreaView>
-                        <IngredientsInput />
+                        <IngredientsInput handleChange = {this.state.handleChange} />
                     </SafeAreaView>
 
                     <SafeAreaView>
