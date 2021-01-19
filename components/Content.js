@@ -78,6 +78,7 @@ export default class Content extends Component {
                 }
                 else{ break }
             }
+            ingredientsArray = [...new Set(ingredientsArray)]
 
             //allIng = allIng.concat(ingredientsArray); //figure out ingredients
             //console.log(ingredientsArray)
@@ -90,6 +91,14 @@ export default class Content extends Component {
 
             drinkArr.push(drinkDict);
         }
+        //sort drinkArr by drink name
+        drinkArr.sort(function(a, b){
+            var x = a.name.toLowerCase();
+            var y = b.name.toLowerCase();
+            if (x < y) {return -1;}
+            if (x > y) {return 1;}
+            return 0;
+          });
         //console.log(drinkArr);
         this.setState({
             cocktailList: drinkArr,
@@ -108,16 +117,16 @@ export default class Content extends Component {
                 <SafeAreaProvider>
                     <SafeAreaView>
                         <Header
-                            leftComponent={{ icon: 'menu', color: '#fff' }}
+                            //leftComponent={{ icon: 'menu', color: '#fff' }}
                             centerComponent={{ text: "BarBuddy", style: { color: '#fff', fontSize: 32, fontWeight: "bold"} }}
-                            rightComponent={{ icon: 'home', color: '#fff' }}
+                            //rightComponent={{ icon: 'home', color: '#fff' }}
                         />
                     </SafeAreaView>
-
-                    <SafeAreaView>
+                    <h2>Ingredients</h2>
+                    {/* <SafeAreaView>
                         <IngredientsInput handleChange = {this.state.handleChange} />
-                    </SafeAreaView>
-
+                    </SafeAreaView> */}
+                    <h2>Cocktails</h2>
                     <SafeAreaView>
                         <ScrollView>
                             <CocktailList 
