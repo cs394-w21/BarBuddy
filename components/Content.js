@@ -28,9 +28,9 @@ export default class Content extends Component {
     // take cocktail componenet and input into cocktailist 
 
 
-    handleChange(e) {
-        console.log("clicked")
-    }
+    // handleChange(e) {
+    //     console.log("clicked")
+    // }
 
     getCocktailData(callback = () => { }) { 
 
@@ -38,7 +38,7 @@ export default class Content extends Component {
             fetch('https://www.thecocktaildb.com/api/json/v2/9973533/popular.php') //fetching popular cocktail data
             .then((response) => response.json())
             .then((json) => {
-                console.log(json);
+                // console.log(json);
                 this.setState({
                     cocktailData: json,
                     dataReceived: 1
@@ -90,7 +90,7 @@ export default class Content extends Component {
             if (x > y) {return 1;}
             return 0;
           });
-        console.log("before" + drinkArr);
+        // console.log("before" + drinkArr);
         this.setState({
             cocktailList: drinkArr,
             //allIngredients: allIng
@@ -100,13 +100,13 @@ export default class Content extends Component {
     }
 
     filterCocktailList() {
-        console.log("we're in")
+        // console.log("we're in")
         let temp_list = [];
         let cocktail;
         let ingredient;
         //console.log("cocktail list", this.state.cocktailList);
         // take list from cocktail list and check if each one matches then 
-        console.log("ingredients", this.state.ingredients);
+        // console.log("ingredients", this.state.ingredients);
         for(cocktail of this.state.cocktailList) {
             let temp = true;                           // maybe try make more efficient 
             for(ingredient of cocktail.ingredients) {
@@ -122,6 +122,13 @@ export default class Content extends Component {
         this.setState({
             filter_list: temp_list,
         })
+    }
+
+    handleUserInput (userInput) {
+        this.setState({
+            ingredients: userInput.split(", ")
+        }, this.filterCocktailList)
+
     }
 
     render () {   
@@ -141,7 +148,7 @@ export default class Content extends Component {
                     <h2>Input your ingredients below:</h2>
                     <Input
                         placeholder="Ingredients"
-                        onChangeText={value => this.setState({ingredientsString: value.split(", ") })}
+                        onChangeText={value => this.handleUserInput(value)}
                     />
                     {/* <SafeAreaView>
                         <IngredientsInput handleChange = {this.state.handleChange} />
