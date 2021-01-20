@@ -19,7 +19,7 @@ export default class Content extends Component {
         } 
         this.getCocktailData = this.getCocktailData.bind(this);
         this.compileCocktailList = this.compileCocktailList.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        //this.handleChange = this.handleChange.bind(this);
         this.filterCocktailList = this.filterCocktailList.bind(this);
     }
 
