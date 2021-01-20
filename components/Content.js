@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header } from 'react-native-elements';
+import { Header, Input } from 'react-native-elements';
 import { Text, View, ScrollView } from 'react-native';
 import CocktailList from './CocktailList/index.js';
 import IngredientsInput from './IngredientsInput/index.js';
@@ -13,11 +13,13 @@ export default class Content extends Component {
             cocktailList: [],
             cocktailData: {},
             dataReceived: 0,
+            ingredients: [],
             //allIngredients: [], //list of ingredients for us 
         } 
         this.getCocktailData = this.getCocktailData.bind(this);
         this.compileCocktailList = this.compileCocktailList.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.filterCocktailList = this.filterCocktailList.bind(this);
     }
 
     //Fetch cocktail data.
@@ -30,18 +32,6 @@ export default class Content extends Component {
     }
 
     getCocktailData(callback = () => { }) { 
-        //this.state.cocktailList = [
-        //     {
-        //     name: 'Classic Margarita',
-        //     avatar_url: 'https://i1.wp.com/www.moodymixologist.com/wp-content/uploads/2020/02/classic-margarita-cocktail-recipe-03-3560629.jpg?w=733&ssl=1',
-        //     ingredients: 'ingredients'
-        // },
-        // {
-        //     name: 'Chris Jackson',
-        //     avatar_url: 'https://i1.wp.com/www.moodymixologist.com/wp-content/uploads/2020/02/classic-margarita-cocktail-recipe-03-3560629.jpg?w=733&ssl=1',
-        //     ingredients: 'ingredients'
-        // },
-        //]
 
         if(this.state.dataReceived == 0) { //render kept repeating
             fetch('https://www.thecocktaildb.com/api/json/v2/9973533/popular.php') //fetching popular cocktail data
@@ -56,6 +46,10 @@ export default class Content extends Component {
                 console.error(error);
             });
         }
+    }
+
+    filterCocktailList() {
+
     }
 
     compileCocktailList() {
@@ -111,6 +105,7 @@ export default class Content extends Component {
 
     render () {   
         this.getCocktailData(this.compileCocktailList);
+        console.log(this.state.ingredientsString)
         
         return (
             <View> 
@@ -122,7 +117,11 @@ export default class Content extends Component {
                             //rightComponent={{ icon: 'home', color: '#fff' }}
                         />
                     </SafeAreaView>
-                    <h2>Ingredients</h2>
+                    <h2>Input your ingredients below:</h2>
+                    <Input
+                        placeholder="Ingredients"
+                        onChangeText={value => this.setState({ ingredientsString: value.split(", ") })}
+                    />
                     {/* <SafeAreaView>
                         <IngredientsInput handleChange = {this.state.handleChange} />
                     </SafeAreaView> */}
