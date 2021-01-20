@@ -14,6 +14,7 @@ export default class Content extends Component {
             cocktailData: {},
             dataReceived: 0,
             ingredients: [],
+            filter_list: []
             //allIngredients: [], //list of ingredients for us 
         } 
         this.getCocktailData = this.getCocktailData.bind(this);
@@ -48,9 +49,6 @@ export default class Content extends Component {
         }
     }
 
-    filterCocktailList() {
-
-    }
 
     compileCocktailList() {
         //console.log(this.state.cocktailData);
@@ -82,7 +80,6 @@ export default class Content extends Component {
                 avatar_url: drink.strDrinkThumb,
                 ingredients: ingredientsArray
             };
-
             drinkArr.push(drinkDict);
         }
         //sort drinkArr by drink name
@@ -93,19 +90,43 @@ export default class Content extends Component {
             if (x > y) {return 1;}
             return 0;
           });
-        //console.log(drinkArr);
+        console.log("before" + drinkArr);
         this.setState({
             cocktailList: drinkArr,
             //allIngredients: allIng
+        },this.filterCocktailList)
+        //console.log("after" + this.state.cocktailList);
+        //this.filterCocktailList();
+    }
+
+    filterCocktailList() {
+        console.log("we're in")
+        let temp_list = [];
+        let cocktail;
+        let ingredient;
+        //console.log("cocktail list", this.state.cocktailList);
+        // take list from cocktail list and check if each one matches then 
+        console.log("ingredients", this.state.ingredients);
+        for(cocktail of this.state.cocktailList) {
+            let temp = true;                           // maybe try make more efficient 
+            for(ingredient of cocktail.ingredients) {
+                if (this.state.ingredients.includes(ingredient) != true) {
+                    temp = false;
+                } 
+            }
+            if (temp == true) {
+                temp_list.push(cocktail);
+            }
+        }
+        //console.log("temp list" + temp_list);
+        this.setState({
+            filter_list: temp_list,
         })
-
-
-        
     }
 
     render () {   
         this.getCocktailData(this.compileCocktailList);
-        console.log(this.state.ingredientsString)
+        //console.log(this.state.ingredientsString)
         
         return (
             <View> 
@@ -120,7 +141,7 @@ export default class Content extends Component {
                     <h2>Input your ingredients below:</h2>
                     <Input
                         placeholder="Ingredients"
-                        onChangeText={value => this.setState({ ingredientsString: value.split(", ") })}
+                        onChangeText={value => this.setState({ingredientsString: value.split(", ") })}
                     />
                     {/* <SafeAreaView>
                         <IngredientsInput handleChange = {this.state.handleChange} />
@@ -129,7 +150,7 @@ export default class Content extends Component {
                     <SafeAreaView>
                         <ScrollView>
                             <CocktailList 
-                                cocktailList = {this.state.cocktailList}
+                                cocktailList = {this.state.filter_list}
                                 //allIngredients = {this.state.allIngredients}
                             />
                         </ScrollView>
