@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements'
+import {ExpandableListView} from 'react-native-expandable-listview';
+
+
+function handleItemClick({index}) {
+    console.log(index);
+  };
+
+function handleInnerItemClick({innerIndex, item, itemIndex}) {
+    console.log(innerIndex);
+  };
 
 
 export default class CocktailList extends Component {
+    
 
-
+    
     render () {
         console.log(this.props.cocktailList)
         //console.log("ingredients")
@@ -15,17 +26,11 @@ export default class CocktailList extends Component {
 
         return (
             <View>
-                {
-                    this.props.cocktailList.map((l, i) => (
-                        <ListItem key={i} bottomDivider>
-                        <Avatar source={{uri: l.avatar_url}} />
-                        <ListItem.Content>
-                            <ListItem.Title>{l.name}</ListItem.Title>
-                            <ListItem.Subtitle>{l.ingredients.join(', ')}</ListItem.Subtitle>
-                        </ListItem.Content>
-                        </ListItem>
-                    ))
-                }
+                <ExpandableListView
+                    data={this.props.cocktailList} // required
+                    onInnerItemClick={handleInnerItemClick}
+                    onItemClick={handleItemClick}
+                />
             </View>
         )
 

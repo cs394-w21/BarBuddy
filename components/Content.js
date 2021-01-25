@@ -14,7 +14,8 @@ export default class Content extends Component {
             cocktailData: {},
             dataReceived: 0,
             ingredients: [],
-            filter_list: []
+            filter_list: [],
+            filtered_list: 0,
             //allIngredients: [], //list of ingredients for us 
         } 
         this.getCocktailData = this.getCocktailData.bind(this);
@@ -57,6 +58,7 @@ export default class Content extends Component {
 
         let drinkArr = [];
         let drink;
+        let idCount = 1;
         //let allIng = []; //figure out ingredients
         for(drink of this.state.cocktailData.drinks){
             // get the ingredients for each drink 
@@ -76,20 +78,23 @@ export default class Content extends Component {
             //console.log(ingredientsArray)
 
             let drinkDict = {
-                name: drink.strDrink,
-                avatar_url: drink.strDrinkThumb,
-                ingredients: ingredientsArray
+                id: idCount,
+                categoryName: drink.strDrink, //drink Name
+                //avatar_url: drink.strDrinkThumb,
+                subCategory: ingredientsArray //ingredients
             };
+
+            idCount++;
             drinkArr.push(drinkDict);
         }
         //sort drinkArr by drink name
-        drinkArr.sort(function(a, b){
+        /*drinkArr.sort(function(a, b){
             var x = a.name.toLowerCase();
             var y = b.name.toLowerCase();
             if (x < y) {return -1;}
             if (x > y) {return 1;}
             return 0;
-          });
+          });*/
         // console.log("before" + drinkArr);
         this.setState({
             cocktailList: drinkArr,
@@ -109,8 +114,8 @@ export default class Content extends Component {
         // console.log("ingredients", this.state.ingredients);
         for(cocktail of this.state.cocktailList) {
             let temp = true;                           // maybe try make more efficient 
-            for(ingredient of cocktail.ingredients) {
-                if (this.state.ingredients.includes(ingredient) != true) {
+            for(ingredient of cocktail.subCategory) {
+                if (this.state.ingredients.includes(ingredient.toUpperCase()) != true) { //set input ingredient from drink to uppercase
                     temp = false;
                 } 
             }
@@ -118,15 +123,19 @@ export default class Content extends Component {
                 temp_list.push(cocktail);
             }
         }
-        //console.log("temp list" + temp_list);
+        console.log("temp list" + temp_list);
         this.setState({
             filter_list: temp_list,
+            filtered_list: 1,
         })
     }
 
-    handleUserInput (userInput) {
+    handleUserInput (userInput)  {
+        var userInputArr = userInput.split(", ")
+        userInputArr = userInputArr.map((input) => input.toUpperCase()) //set all ingredients in data to uppercase
+        
         this.setState({
-            ingredients: userInput.split(", ")
+            ingredients: userInputArr
         }, this.filterCocktailList)
 
     }
@@ -134,36 +143,67 @@ export default class Content extends Component {
     render () {   
         this.getCocktailData(this.compileCocktailList);
         //console.log(this.state.ingredientsString)
-        
-        return (
-            <View> 
-                <SafeAreaProvider>
-                    <SafeAreaView>
-                        <Header
-                            //leftComponent={{ icon: 'menu', color: '#fff' }}
-                            centerComponent={{ text: "BarBuddy", style: { color: '#fff', fontSize: 32, fontWeight: "bold"} }}
-                            //rightComponent={{ icon: 'home', color: '#fff' }}
-                        />
-                    </SafeAreaView>
-                    <h2>Input your ingredients below:</h2>
-                    <Input
-                        placeholder="Ingredients"
-                        onChangeText={value => this.handleUserInput(value)}
-                    />
-                    {/* <SafeAreaView>
-                        <IngredientsInput handleChange = {this.state.handleChange} />
-                    </SafeAreaView> */}
-                    <h2>Cocktails</h2>
-                    <SafeAreaView>
-                        <ScrollView>
-                            <CocktailList 
-                                cocktailList = {this.state.filter_list}
-                                //allIngredients = {this.state.allIngredients}
+        //console.log(this.state.filter_list)
+
+        if(this.state.filtered_list == 0) {
+            console.log(1);
+            return (
+                <View> 
+                    <SafeAreaProvider>
+                        <SafeAreaView>
+                            <Header
+                                //leftComponent={{ icon: 'menu', color: '#fff' }}
+                                centerComponent={{ text: "BarBuddy", style: { color: '#fff', fontSize: 32, fontWeight: "bold"} }}
+                                //rightComponent={{ icon: 'home', color: '#fff' }}
                             />
-                        </ScrollView>
-                    </SafeAreaView>
-                </SafeAreaProvider>
-            </View>
-        )
+                        </SafeAreaView>
+                        <h2>Input your ingredients below:</h2>
+                        <Input
+                            placeholder="Ingredients"
+                            onChangeText={value => this.handleUserInput(value)}
+                        />
+                        {/* <SafeAreaView>
+                            <IngredientsInput handleChange = {this.state.handleChange} />
+                        </SafeAreaView> */}
+                        <h2>Cocktails</h2>
+                    </SafeAreaProvider>
+                </View>
+            )
+        }
+        else {
+            console.log(2);
+            return (
+                <View> 
+                    <SafeAreaProvider>
+                        <SafeAreaView>
+                            <Header
+                                //leftComponent={{ icon: 'menu', color: '#fff' }}
+                                centerComponent={{ text: "BarBuddy", style: { color: '#fff', fontSize: 32, fontWeight: "bold"} }}
+                                //rightComponent={{ icon: 'home', color: '#fff' }}
+                            />
+                        </SafeAreaView>
+                        <h2>Input your ingredients below:</h2>
+                        <Input
+                            placeholder="Ingredients"
+                            onChangeText={value => this.handleUserInput(value)}
+                        />
+                        {/* <SafeAreaView>
+                            <IngredientsInput handleChange = {this.state.handleChange} />
+                        </SafeAreaView> */}
+                        <h2>Cocktails</h2>
+                        <SafeAreaView>
+                            <ScrollView>
+                                <CocktailList 
+                                    cocktailList = {this.state.filter_list}
+                                    //allIngredients = {this.state.allIngredients}
+                                />
+                            </ScrollView>
+                        </SafeAreaView>
+                    </SafeAreaProvider>
+                </View>
+            )
+        }
+
+        
     }
 }
