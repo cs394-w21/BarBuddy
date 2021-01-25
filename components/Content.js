@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Header, Input } from 'react-native-elements';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, Image } from 'react-native';
 import CocktailList from './CocktailList/index.js';
 import IngredientsInput from './IngredientsInput/index.js';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-
+//import Cocktail from './CocktailList/components/Cocktail.js';
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
 
 export default class Content extends Component {
     constructor(props) {
@@ -62,11 +63,17 @@ export default class Content extends Component {
             // get the ingredients for each drink 
             //TODO display each ingredients individually for filter
             let ingredientsArray = []; 
+            let measurementsArray = [];
             
-            for(let i=0; i<15; i++) {    
+            for(let i=0; i<15; i++) {   
+                console.log("drink:", drink) 
                 let x = `strIngredient${i+1}`
+                let y = `strMeasure${i+1}`
                 if (drink[x]!=null) {
                 ingredientsArray.push(drink[x])
+                    if(drink[y]!=null){
+                        measurementsArray.push(drink[y])
+                    }
                 }
                 else{ break }
             }
@@ -78,7 +85,9 @@ export default class Content extends Component {
             let drinkDict = {
                 name: drink.strDrink,
                 avatar_url: drink.strDrinkThumb,
-                ingredients: ingredientsArray
+                ingredients: ingredientsArray,
+                instructions: drink.strInstructions,
+                measurements: measurementsArray
             };
             drinkArr.push(drinkDict);
         }
@@ -122,6 +131,7 @@ export default class Content extends Component {
         this.setState({
             filter_list: temp_list,
         })
+        console.log(this.filter_list);
     }
 
     handleUserInput (userInput) {
@@ -133,37 +143,79 @@ export default class Content extends Component {
 
     render () {   
         this.getCocktailData(this.compileCocktailList);
+        //console.log(this.state.cocktailList);
+        return(
+                <View> 
+                    <SafeAreaProvider>
+                        <SafeAreaView>
+                            <Header
+                                //leftComponent={{ icon: 'menu', color: '#fff' }}
+                                centerComponent={{ text: "BarBuddy", style: { color: '#fff', fontSize: 32, fontWeight: "bold"} }}
+                                //rightComponent={{ icon: 'home', color: '#fff' }}
+                            />
+                        </SafeAreaView>
+                        <h2>Cocktail Name Extending to see what happens</h2>
+                        <Card>
+                            <Card.Title>Mojito</Card.Title>
+                            <Card.Divider/>
+                            <Card.Image source="https://www.thecocktaildb.com/images/media/drink/metwgh1606770327.jpg">
+                            </Card.Image>
+                            <Text style={{marginBottom: 10}}>
+                                Ingredients: Light rum, lime, mint, soda water
+                            </Text>
+                            <Text style={{marginBottom: 10}}>
+                                Instructions: Muddle mint leaves with sugar and lime juice. Add a splash of soda water and fill the glass with cracked ice. Pour the rum and top with soda water. Garnish and serve with straw.
+                            </Text>
+                                {/* {
+                                    this.state.cocktailList.map((u, i) => {
+                                    
+                                        <View key={i} style={styles.user}>
+                                        <Image
+                                            style={styles.image}
+                                            resizeMode="cover"
+                                            source={{ uri: u.avatar }}
+                                        />
+                                        <Text style={styles.name}>{u.name}</Text>
+                                        </View>
+                                    
+                                    })
+                                } */}
+                        </Card>
+                    </SafeAreaProvider>
+                    
+                </View>
+        )
         //console.log(this.state.ingredientsString)
         
-        return (
-            <View> 
-                <SafeAreaProvider>
-                    <SafeAreaView>
-                        <Header
-                            //leftComponent={{ icon: 'menu', color: '#fff' }}
-                            centerComponent={{ text: "BarBuddy", style: { color: '#fff', fontSize: 32, fontWeight: "bold"} }}
-                            //rightComponent={{ icon: 'home', color: '#fff' }}
-                        />
-                    </SafeAreaView>
-                    <h2>Input your ingredients below:</h2>
-                    <Input
-                        placeholder="Ingredients"
-                        onChangeText={value => this.handleUserInput(value)}
-                    />
-                    {/* <SafeAreaView>
-                        <IngredientsInput handleChange = {this.state.handleChange} />
-                    </SafeAreaView> */}
-                    <h2>Cocktails</h2>
-                    <SafeAreaView>
-                        <ScrollView>
-                            <CocktailList 
-                                cocktailList = {this.state.filter_list}
-                                //allIngredients = {this.state.allIngredients}
-                            />
-                        </ScrollView>
-                    </SafeAreaView>
-                </SafeAreaProvider>
-            </View>
-        )
+        // return (
+        //     <View> 
+        //         <SafeAreaProvider>
+        //             <SafeAreaView>
+        //                 <Header
+        //                     //leftComponent={{ icon: 'menu', color: '#fff' }}
+        //                     centerComponent={{ text: "BarBuddy", style: { color: '#fff', fontSize: 32, fontWeight: "bold"} }}
+        //                     //rightComponent={{ icon: 'home', color: '#fff' }}
+        //                 />
+        //             </SafeAreaView>
+        //             <h2>Input your ingredients below:</h2>
+        //             <Input
+        //                 placeholder="Ingredients"
+        //                 onChangeText={value => this.handleUserInput(value)}
+        //             />
+        //             {/* <SafeAreaView>
+        //                 <IngredientsInput handleChange = {this.state.handleChange} />
+        //             </SafeAreaView> */}
+        //             <h2>Cocktails</h2>
+        //             <SafeAreaView>
+        //                 <ScrollView>
+        //                     <CocktailList 
+        //                         cocktailList = {this.state.filter_list}
+        //                         //allIngredients = {this.state.allIngredients}
+        //                     />
+        //                 </ScrollView>
+        //             </SafeAreaView>
+        //         </SafeAreaProvider>
+        //     </View>
+        // )
     }
 }
