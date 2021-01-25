@@ -77,6 +77,7 @@ export default class Content extends Component {
                 }
                 else{ break }
             }
+            //make -------------------------------------------------
             ingredientsArray = [...new Set(ingredientsArray)]
 
             //allIng = allIng.concat(ingredientsArray); //figure out ingredients
@@ -140,10 +141,9 @@ export default class Content extends Component {
         }, this.filterCocktailList)
 
     }
-
     render () {   
         this.getCocktailData(this.compileCocktailList);
-        //console.log(this.state.cocktailList);
+        console.log("here", this.state.cocktailList);
         return(
                 <View> 
                     <SafeAreaProvider>
@@ -161,7 +161,10 @@ export default class Content extends Component {
                             <Card.Image source="https://www.thecocktaildb.com/images/media/drink/metwgh1606770327.jpg">
                             </Card.Image>
                             <Text style={{marginBottom: 10}}>
-                                Ingredients: Light rum, lime, mint, soda water
+                            Ingredients
+                            </Text>
+                            <Text style={{marginBottom: 10}}>
+                            Measurements: 2 rum, 3 lime, half a can of coke
                             </Text>
                             <Text style={{marginBottom: 10}}>
                                 Instructions: Muddle mint leaves with sugar and lime juice. Add a splash of soda water and fill the glass with cracked ice. Pour the rum and top with soda water. Garnish and serve with straw.
