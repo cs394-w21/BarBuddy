@@ -19,7 +19,11 @@ export default class CocktailList extends Component {
 
         for(let i = 0; i < l.ingredients.length; i++)
         {
-            ingredientStrings.push(l.measures[i] + l.ingredients[i]);
+            if(l.measures[i].charAt(l.measures[i].length -1) != ' ')
+            {
+                l.measures[i] += " ";
+            }
+            ingredientStrings.push(l.measures[i] + l.ingredients[i]); //bug with if there isn't a space after measure
         }
         
         return ( // make a helper function to be able to join ingredients.
