@@ -61,16 +61,27 @@ export default class Content extends Component {
         for(drink of this.state.cocktailData.drinks){
             // get the ingredients for each drink 
             //TODO display each ingredients individually for filter
-            let ingredientsArray = []; 
+            let ingredientsArray = [];  
+            let measuresArray = [];
             
             for(let i=0; i<15; i++) {    
                 let x = `strIngredient${i+1}`
+                let y = `strMeasure${i+1}`
+
                 if (drink[x]!=null) {
-                ingredientsArray.push(drink[x])
+                    ingredientsArray.push(drink[x]);
+                    if (drink[y] == null)
+                    {
+                        measuresArray.push("");
+                    }
+                    else
+                    {
+                        measuresArray.push(drink[y])
+                    }
                 }
                 else{ break }
             }
-            ingredientsArray = [...new Set(ingredientsArray)]
+            ///ingredientsArray = [...new Set(ingredientsArray)]
 
             //allIng = allIng.concat(ingredientsArray); //figure out ingredients
             //console.log(ingredientsArray)
@@ -78,7 +89,9 @@ export default class Content extends Component {
             let drinkDict = {
                 name: drink.strDrink,
                 avatar_url: drink.strDrinkThumb,
-                ingredients: ingredientsArray
+                ingredients: ingredientsArray,
+                measures: measuresArray,
+                instructions: drink['strInstructions']
             };
             drinkArr.push(drinkDict);
         }

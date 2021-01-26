@@ -7,10 +7,31 @@ export default class CocktailList extends Component {
     constructor(props) {
         super(props);
         this.chevronPress = this.chevronPress.bind(this);
+        this.cocktailListDisplayHelper = this.cocktailListDisplayHelper.bind(this);
     }
 
     chevronPress () {
         console.log("pressed");
+    }
+
+    cocktailListDisplayHelper (l, i) {
+        let ingredientStrings = []
+
+        for(let i = 0; i < l.ingredients.length; i++)
+        {
+            ingredientStrings.push(l.measures[i] + l.ingredients[i]);
+        }
+        
+        return ( // make a helper function to be able to join ingredients.
+            <ListItem key={i} bottomDivider>
+            <Avatar source={{uri: l.avatar_url}} />
+            <ListItem.Content>
+                <ListItem.Title>{l.name}</ListItem.Title>
+                <ListItem.Subtitle>{ingredientStrings.join(', ')}</ListItem.Subtitle>
+                <ListItem.Subtitle>{l.instructions}</ListItem.Subtitle>
+            </ListItem.Content>
+            </ListItem>
+        )
     }
     
 
@@ -24,16 +45,7 @@ export default class CocktailList extends Component {
         return (
             <View>
                 {
-                    this.props.cocktailList.map((l, i) => (
-                        <ListItem key={i} bottomDivider>
-                        <Avatar source={{uri: l.avatar_url}} />
-                        <ListItem.Content>
-                            <ListItem.Title>{l.name}</ListItem.Title>
-                            <ListItem.Subtitle>{l.ingredients.join(', ')}</ListItem.Subtitle>
-                        </ListItem.Content>
-                        <ListItem.Chevron onPress={this.chevronPress}/>
-                        </ListItem>
-                    ))
+                    this.props.cocktailList.map((l, i) => this.cocktailListDisplayHelper(l, i))
                 }
             </View>
         )
