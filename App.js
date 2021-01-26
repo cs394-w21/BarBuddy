@@ -20,6 +20,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-//Testing repo
-// testing too

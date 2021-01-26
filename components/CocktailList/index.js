@@ -4,7 +4,15 @@ import { ListItem, Avatar } from 'react-native-elements'
 
 
 export default class CocktailList extends Component {
+    constructor(props) {
+        super(props);
+        this.chevronPress = this.chevronPress.bind(this);
+    }
 
+    chevronPress () {
+        console.log("pressed");
+    }
+    
 
     render () {
         console.log(this.props.cocktailList)
@@ -23,6 +31,7 @@ export default class CocktailList extends Component {
                             <ListItem.Title>{l.name}</ListItem.Title>
                             <ListItem.Subtitle>{l.ingredients.join(', ')}</ListItem.Subtitle>
                         </ListItem.Content>
+                        <ListItem.Chevron onPress={this.chevronPress}/>
                         </ListItem>
                     ))
                 }

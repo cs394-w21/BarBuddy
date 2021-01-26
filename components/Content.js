@@ -110,7 +110,7 @@ export default class Content extends Component {
         for(cocktail of this.state.cocktailList) {
             let temp = true;                           // maybe try make more efficient 
             for(ingredient of cocktail.ingredients) {
-                if (this.state.ingredients.includes(ingredient) != true) {
+                if (this.state.ingredients.includes(ingredient.toUpperCase()) != true) {
                     temp = false;
                 } 
             }
@@ -126,7 +126,7 @@ export default class Content extends Component {
 
     handleUserInput (userInput) {
         this.setState({
-            ingredients: userInput.split(", ")
+            ingredients: userInput.split(", ").map((input) => input.toUpperCase())
         }, this.filterCocktailList)
 
     }
