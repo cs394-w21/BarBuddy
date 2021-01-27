@@ -43,7 +43,7 @@ export default class Content extends Component {
             .then((json) => {
                 console.log(json);
                 let cocktailDataTemp = []
-                cocktailDataTemp = json.drinks
+                cocktailDataTemp = json.drinks //initialize cocktailDataTemp
                 this.getCocktailDataHelper(cocktailDataTemp, callback, alphabet, 1)
 
             }).catch((error) => {
@@ -67,7 +67,7 @@ export default class Content extends Component {
             else
             {
                 cocktailDataTemp = cocktailDataTemp.concat(json['drinks'])
-                cocktailDataTemp = cocktailDataTemp.filter(x => x !== null)
+                cocktailDataTemp = cocktailDataTemp.filter(x => x !== null) //remove null
                 let cocktailDataTempDict = {}
                 cocktailDataTempDict.drinks = cocktailDataTemp
 
