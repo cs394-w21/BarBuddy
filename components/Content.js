@@ -34,19 +34,54 @@ export default class Content extends Component {
 
     getCocktailData(callback = () => { }) { 
 
+        let alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+
         if(this.state.dataReceived == 0) { //render kept repeating
-            fetch('https://www.thecocktaildb.com/api/json/v2/9973533/popular.php') //fetching popular cocktail data
+            fetch('https://www.thecocktaildb.com/api/json/v2/9973533/search.php?f=a') //fetching popular cocktail data
             .then((response) => response.json())
             .then((json) => {
-                // console.log(json);
-                this.setState({
-                    cocktailData: json,
-                    dataReceived: 1
-                }, callback)
+                console.log(json);
+                let cocktailDataTemp = []
+                cocktailDataTemp = json.drinks
+                this.getCocktailDataHelper(cocktailDataTemp, callback, alphabet, 1)
+
             }).catch((error) => {
                 console.error(error);
             });
         }
+    }
+
+    getCocktailDataHelper(cocktailDataTemp, callback, alphabet, i) {
+        console.log("cocktail data temp", cocktailDataTemp);
+        
+        fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/search.php?f=${alphabet.substring(i, i+1)}`) //fetching popular cocktail data
+        .then((response) => response.json())
+        .then((json) => {
+            //console.log(alphabet.substring(i, i+1), json);
+            if(i < 25)
+            {
+                cocktailDataTemp = cocktailDataTemp.concat(json['drinks'])
+                this.getCocktailDataHelper(cocktailDataTemp, callback, alphabet, i+1)               
+            }
+            else
+            {
+                cocktailDataTemp = cocktailDataTemp.concat(json['drinks'])
+                cocktailDataTemp = cocktailDataTemp.filter(x => x !== null)
+                let cocktailDataTempDict = {}
+                cocktailDataTempDict.drinks = cocktailDataTemp
+
+
+                this.setState({
+                    cocktailData: cocktailDataTempDict,
+                    dataReceived: 1
+                }, callback)
+            }
+            
+
+        }).catch((error) => {
+            console.error(error);
+        });
     }
 
 
