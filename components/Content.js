@@ -36,10 +36,7 @@ export default class Content extends Component {
     // }
 
     getCocktailData(callback = () => { }) { 
-
         let alphabet = "abcdefghijklmnopqrstuvwxyz";
-
-
         if(this.state.dataReceived == 0) { //render kept repeating
             fetch('https://www.thecocktaildb.com/api/json/v2/9973533/search.php?f=a') //fetching popular cocktail data
             .then((response) => response.json())
@@ -55,9 +52,7 @@ export default class Content extends Component {
         }
     }
 
-    getCocktailDataHelper(cocktailDataTemp, callback, alphabet, i) {
-        console.log("cocktail data temp", cocktailDataTemp);
-        
+    getCocktailDataHelper(cocktailDataTemp, callback, alphabet, i) {        
         fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/search.php?f=${alphabet.substring(i, i+1)}`) //fetching popular cocktail data
         .then((response) => response.json())
         .then((json) => {
@@ -123,9 +118,9 @@ export default class Content extends Component {
 
             //allIng = allIng.concat(ingredientsArray); //figure out ingredients
             //console.log(ingredientsArray)
-
             let drinkDict = {
                 name: drink.strDrink,
+                id: drink.idDrink,
                 avatar_url: drink.strDrinkThumb,
                 ingredients: ingredientsArray,
                 measures: measuresArray,
