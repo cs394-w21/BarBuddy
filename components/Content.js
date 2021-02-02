@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { Header, Input } from 'react-native-elements';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, StyleSheet } from 'react-native';
 import CocktailList from './CocktailList/index.js';
 import IngredientsInput from './IngredientsInput/index.js';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
+const styles = StyleSheet.create({
+    headers: {
+        fontWeight: 'bold',
+        fontSize: 20,
+    }
+})
 
 export default class Content extends Component {
     constructor(props) {
@@ -230,7 +236,9 @@ export default class Content extends Component {
                             //rightComponent={{ icon: 'home', color: '#fff' }}
                         />
                     </SafeAreaView>
-                    <h2>Input your ingredients below:</h2>
+                    <Text style={styles.headers}>
+                        Input your ingredients below:
+                    </Text>
                     <Input
                         placeholder="Ingredients"
                         onChangeText={value => this.handleUserInput(value)}
@@ -238,7 +246,9 @@ export default class Content extends Component {
                     {/* <SafeAreaView>
                         <IngredientsInput handleChange = {this.state.handleChange} />
                     </SafeAreaView> */}
-                    <h2>Cocktails: Exact</h2>
+                    <Text style={styles.headers}>
+                        Cocktails: Exact
+                    </Text>
                     <SafeAreaView>
                         <ScrollView>
                             <CocktailList 
@@ -247,7 +257,9 @@ export default class Content extends Component {
                             />
                         </ScrollView>
                     </SafeAreaView>
-                    <h2>Cocktails: Explore</h2>
+                    <Text style={styles.headers}>
+                        Cocktails: Explore
+                    </Text>
                     <SafeAreaView>
                         <ScrollView>
                             <CocktailList 

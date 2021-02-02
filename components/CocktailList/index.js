@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Linking} from 'react-native';
+import { Platform, Text, View, Linking} from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements'
 
 
@@ -13,7 +13,14 @@ export default class CocktailList extends Component {
 
     chevronPress = (id) => {
         console.log("pressed" + id);
-        Linking.openURL(`https://thecocktaildb.com/drink/${id} `)
+        let idInt = id;
+        let url = `https://thecocktaildb.com/drink/${idInt}`;
+
+        if(Platform.OS == 'web'){
+            window.open(url, '_blank');
+         } else {
+            Linking.openURL(url, '_blank') // normal Linking react-native
+         }
     }
 
     cocktailListDisplayHelper (l, i) {
@@ -29,14 +36,13 @@ export default class CocktailList extends Component {
         }
         
         return ( // make a helper function to be able to join ingredients.
-            <ListItem  key={i} bottomDivider>
+            <ListItem onPress ={() => this.chevronPress(l.id)} key={i} bottomDivider>
             <Avatar source={{uri: l.avatar_url}} />
             <ListItem.Content>
                 <ListItem.Title>{l.name}</ListItem.Title>
                 <ListItem.Subtitle>{ingredientStrings.join(', ')}</ListItem.Subtitle>
                 <ListItem.Subtitle>{l.instructions}</ListItem.Subtitle>
             </ListItem.Content>
-            <ListItem.Chevron onPress ={() => this.chevronPress(l.id)}/>
             </ListItem >
         )
     }
