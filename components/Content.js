@@ -14,13 +14,16 @@ export default class Content extends Component {
             cocktailData: {},
             dataReceived: 0,
             ingredients: [],
-            filter_list: []
+            filter_list: [],
+            explore_list: [],
             //allIngredients: [], //list of ingredients for us 
         } 
         this.getCocktailData = this.getCocktailData.bind(this);
         this.compileCocktailList = this.compileCocktailList.bind(this);
         //this.handleChange = this.handleChange.bind(this);
         this.filterCocktailList = this.filterCocktailList.bind(this);
+        this.filterExploreList = this.filterExploreList.bind(this);
+        this.filter = this.filter.bind(this);
     }
 
     //Fetch cocktail data.
@@ -103,7 +106,7 @@ export default class Content extends Component {
                 let x = `strIngredient${i+1}`
                 let y = `strMeasure${i+1}`
 
-                if (drink[x]!=null) {
+                if ((drink[x]!=null) && (drink[x]!= "")) {
                     ingredientsArray.push(drink[x]);
                     if (drink[y] == null)
                     {
@@ -147,6 +150,11 @@ export default class Content extends Component {
         //this.filterCocktailList();
     }
 
+    filter(){
+        this.filterCocktailList();
+        this.filterExploreList();
+    }
+
     filterCocktailList() {
         // console.log("we're in")
         let temp_list = [];
@@ -169,6 +177,40 @@ export default class Content extends Component {
         //console.log("temp list" + temp_list);
         this.setState({
             filter_list: temp_list,
+        },
+        this.filterExploreList)
+    }
+
+    filterExploreList(){
+        let temp_list = [];
+        let cocktail;
+        let ingredient;
+        //console.log("cocktail list", this.state.cocktailList);
+        // take list from cocktail list and check if each one matches then 
+        // console.log("ingredients", this.state.ingredients);
+        for(cocktail of this.state.cocktailList) {
+            let temp = false;                           // maybe try make more efficient 
+            for(ingredient of cocktail.ingredients) {
+                if (this.state.ingredients.includes(ingredient.toUpperCase()) == true) {
+                    temp = true;
+                } 
+            }
+            if ((temp == true) && (!(this.state.filter_list.includes(cocktail)))){
+                temp_list.push(cocktail);
+            }
+        }
+        //also: filter explore list based on filter list
+        //this.filterCocktailList();
+        // for(cocktail of temp_list){
+        //     if (this.state.filter_list.includes(cocktail)){
+        //         console.log("Removing " + cocktail.name);
+        //         temp_list.filter((cocktail) => c;
+        //     }
+        // }
+
+        //console.log("temp list" + temp_list);
+        this.setState({
+            explore_list: temp_list,
         })
     }
 
@@ -201,11 +243,20 @@ export default class Content extends Component {
                     {/* <SafeAreaView>
                         <IngredientsInput handleChange = {this.state.handleChange} />
                     </SafeAreaView> */}
-                    <h2>Cocktails</h2>
+                    <h2>Cocktails: Exact</h2>
                     <SafeAreaView>
                         <ScrollView>
                             <CocktailList 
                                 cocktailList = {this.state.filter_list}
+                                //allIngredients = {this.state.allIngredients}
+                            />
+                        </ScrollView>
+                    </SafeAreaView>
+                    <h2>Cocktails: Explore</h2>
+                    <SafeAreaView>
+                        <ScrollView>
+                            <CocktailList 
+                                cocktailList = {this.state.explore_list}
                                 //allIngredients = {this.state.allIngredients}
                             />
                         </ScrollView>
