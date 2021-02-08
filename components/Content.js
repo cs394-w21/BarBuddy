@@ -9,6 +9,10 @@ const styles = StyleSheet.create({
     headers: {
         fontWeight: 'bold',
         fontSize: 20,
+        padding: 10,
+    },
+    subheader: {
+        fontSize: 14,
     }
 })
 
@@ -247,7 +251,7 @@ export default class Content extends Component {
                         <IngredientsInput handleChange = {this.state.handleChange} />
                     </SafeAreaView> */}
                     <Text style={styles.headers}>
-                        Cocktails: Exact
+                        Cocktails: Exact Matches
                     </Text>
                     <SafeAreaView>
                         <ScrollView>
@@ -258,7 +262,7 @@ export default class Content extends Component {
                         </ScrollView>
                     </SafeAreaView>
                     <Text style={styles.headers}>
-                        Cocktails: Explore
+                        Cocktails: Explore More
                     </Text>
                     <SafeAreaView>
                         <ScrollView>
